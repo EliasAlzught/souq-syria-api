@@ -1,0 +1,31 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: souq-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: souq
+      POSTGRES_PASSWORD: souq_dev_password
+      POSTGRES_DB: souq_db
+    ports:
+      - '5432:5432'
+    volumes:
+      - souq_pg_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U souq -d souq_db']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  # لوحة إدارة بسيطة لقاعدة البيانات أثناء التطوير (اختياري)
+  adminer:
+    image: adminer:latest
+    container_name: souq-adminer
+    restart: unless-stopped
+    ports:
+      - '8080:8080'
+    depends_on:
+      - postgres
+
+volumes:
+  souq_pg_data:

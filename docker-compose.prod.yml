@@ -1,0 +1,53 @@
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: souq-postgres
+    restart: unless-stopped
+    environment:
+      POSTGRES_USER: souq
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD}
+      POSTGRES_DB: souq_db
+    volumes:
+      - souq_pg_data:/var/lib/postgresql/data
+    # ⚠️ قصداً بدون "ports" هون - قاعدة البيانات ما لازم تكون مكشوفة من برا السيرفر أبداً بالإنتاج
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U souq -d souq_db']
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  api:
+    build: .
+    container_name: souq-api
+    restart: unless-stopped
+    env_file: .env
+    depends_on:
+      postgres:
+        condition: service_healthy
+    volumes:
+      - souq_uploads:/app/uploads
+    expose:
+      - '3000' # داخلي بس - كادي هو اللي بيكشفه للخارج
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: souq-caddy
+    restart: unless-stopped
+    environment:
+      - DOMAIN=${DOMAIN}
+    ports:
+      - '80:80'
+      - '443:443'
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile:ro
+      - caddy_data:/data
+      - caddy_config:/config
+      - souq_uploads:/srv/uploads:ro
+    depends_on:
+      - api
+
+volumes:
+  souq_pg_data:
+  souq_uploads:
+  caddy_data:
+  caddy_config:

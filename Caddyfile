@@ -1,0 +1,10 @@
+{$DOMAIN} {
+	# الصور المرفوعة تُقدَّم مباشرة من كادي (أسرع من تمريرها عبر Node)
+	handle_path /uploads/* {
+		root * /srv/uploads
+		file_server
+	}
+
+	# كل شي تاني (API + Socket.IO) يروح لحاوية النود
+	reverse_proxy api:3000
+}
