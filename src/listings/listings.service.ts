@@ -22,7 +22,7 @@ const LISTING_INCLUDE = {
       phone: true,
       ratingAvg: true,
       ratingCount: true,
-      isVerified: true,
+      isPhoneVerified: true,
     },
   },
 };

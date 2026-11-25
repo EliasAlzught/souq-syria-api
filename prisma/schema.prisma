@@ -18,12 +18,14 @@ enum Role {
 }
 
 model User {
-  id            String   @id @default(uuid())
-  phone         String   @unique // بصيغة دولية: +9639xxxxxxxx
-  name          String?
-  avatarUrl     String?
-  role          Role     @default(USER)
-  isVerified    Boolean  @default(false) // توثيق رقم الهاتف
+  id              String   @id @default(uuid())
+  email           String   @unique // الهوية الأساسية للدخول (عبر Google)
+  googleId        String?  @unique // sub الراجع من Google - لمطابقة الحساب لاحقاً
+  phone           String?  @unique // بصيغة دولية: +9639xxxxxxxx - اختياري، يُضاف لاحقاً بخطوة توثيق منفصلة
+  name            String?
+  avatarUrl       String?
+  role            Role     @default(USER)
+  isPhoneVerified Boolean  @default(false) // توثيق رقم الهاتف (كان اسمها isVerified سابقاً)
   ratingAvg     Float    @default(0)
   ratingCount   Int      @default(0)
   walletBalance Int      @default(0) // بالليرة السورية، بوحدات صحيحة

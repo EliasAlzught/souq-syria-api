@@ -104,18 +104,22 @@ async function main() {
   const [admin, khaled, abuMohammad, sara, rami, lina] = await Promise.all([
     prisma.user.create({
       data: {
+        email: 'admin@souqna.app',
+        googleId: 'dev-google-id-admin',
         phone: '+963900000001',
         name: 'إدارة سوقنا',
         role: 'ADMIN',
-        isVerified: true,
+        isPhoneVerified: true,
       },
     }),
     prisma.user.create({
       data: {
+        email: 'khaled.alali@example.com',
+        googleId: 'dev-google-id-khaled',
         phone: '+963912345678',
         name: 'خالد العلي',
         role: 'USER',
-        isVerified: true,
+        isPhoneVerified: true,
         ratingAvg: 4.9,
         ratingCount: 21,
         walletBalance: 8500,
@@ -124,10 +128,12 @@ async function main() {
     }),
     prisma.user.create({
       data: {
+        email: 'abu.mohammad@example.com',
+        googleId: 'dev-google-id-abumohammad',
         phone: '+963933111222',
         name: 'أبو محمد',
         role: 'USER',
-        isVerified: true,
+        isPhoneVerified: true,
         ratingAvg: 4.8,
         ratingCount: 14,
         freeListingsUsed: 2, // لسا عنده إعلان مجاني وحد
@@ -135,10 +141,12 @@ async function main() {
     }),
     prisma.user.create({
       data: {
+        email: 'sara.hamdan@example.com',
+        googleId: 'dev-google-id-sara',
         phone: '+963944222333',
         name: 'سارة حمدان',
         role: 'USER',
-        isVerified: true,
+        isPhoneVerified: true,
         ratingAvg: 4.6,
         ratingCount: 6,
         freeListingsUsed: 3, // استهلكت كل المجاني
@@ -147,19 +155,23 @@ async function main() {
     }),
     prisma.user.create({
       data: {
-        phone: '+963955333444',
+        email: 'rami.youssef@example.com',
+        googleId: 'dev-google-id-rami',
         name: 'رامي يوسف',
         role: 'USER',
-        isVerified: false,
+        // ما وثّق رقم هاتفه بعد (isPhoneVerified: false افتراضياً، phone فاضي)
+        // لتجربة حالة "مسجّل دخول عبر Google بس لسا ما وثّق موبايله"
         // ما استخدم ولا إعلان مجاني بعد (freeListingsUsed = 0 افتراضياً)
       },
     }),
     prisma.user.create({
       data: {
+        email: 'lina.kassem@example.com',
+        googleId: 'dev-google-id-lina',
         phone: '+963966444555',
         name: 'لينا قاسم',
         role: 'USER',
-        isVerified: true,
+        isPhoneVerified: true,
         ratingAvg: 5.0,
         ratingCount: 3,
         freeListingsUsed: 3, // استهلكت المجاني وما عندها باقة - أي إعلان جديد رح يحتاج دفع

@@ -24,4 +24,10 @@ export default () => ({
     privateKey: process.env.FIREBASE_PRIVATE_KEY?.replace(/\\n/g, '\n'),
     newListingsTopic: process.env.FCM_NEW_LISTINGS_TOPIC ?? 'new_listings',
   },
+  google: {
+    // Web Client ID من نفس مشروع Firebase (Google Cloud Console → Credentials → OAuth 2.0 Client IDs)
+    // هاد هو الـ "audience" اللي منتحقق منه بتوكن Google - لازم يكون نفسه المستخدم بـ serverClientId
+    // بتطبيق Flutter (حزمة google_sign_in).
+    clientId: process.env.GOOGLE_CLIENT_ID,
+  },
 });
